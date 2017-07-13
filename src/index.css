@@ -1,0 +1,10 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+}
+#container--VideoSearch{
+    width: 80%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
