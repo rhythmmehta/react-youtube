@@ -19,8 +19,8 @@ render(){
     let results=this.props.results.items;
     let details;
        if(results) {
-           details = results.map((item)=>{
-             return (<div className="SearchResults">    <p><b>Title:</b>{item.snippet.title}</p>
+           details = results.map((item,index)=>{
+             return (<div key={index} className="SearchResults">    <p><b>Title:</b>{item.snippet.title}</p>
    <p><b>Channel Name:</b>{item.snippet.channelTitle}</p>
    <p><b>Thumbnail:</b><img src={item.snippet.thumbnails.high.url} height="100" width="120"/></p>
 

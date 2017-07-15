@@ -27,6 +27,13 @@ export function getSearchResults(searchString) {
     return async (dispatch, getState) => {
         try{
             dispatch(intiateSearchResults());
+            let recent;
+            recent = getState().search.searches;
+            let exists = recent.filter(x=>x===searchString);
+            if(exists.length === 0) {
+                recent.push(searchString);
+                dispatch(addSearchResult(recent));
+            }
 
             let results = await search(searchString);
 
@@ -41,5 +48,43 @@ export function getSearchResults(searchString) {
             console.log(e);
             dispatch(searchResultsFailure());
         }
+  }
+}
+
+export const ADD_RECENT_SEARCHES = 'ADD_RECENT_SEARCHES';
+
+export function addSearchResult(search) {
+    return {
+        type: ADD_RECENT_SEARCHES,
+        data: search
+    }
+}
+
+export const SEARCH_CHANGE_PAGE ='SEARCH_CHANGE_PAGE';
+export function getChangePage()
+{
+    return{
+        type: SEARCH_CHANGE_PAGE,
+        message: 'Page Change'
+
+    }
+}
+import {changePage} from '../../api/search';
+export function goToPage(searchString, changeToken){
+    return async (dispatch, getState) => {
+        try{
+    dispatch(getChangePage());
+    let results = await changePage(searchString,changeToken);
+
+    if( results) {
+        dispatch(searchResultsSuccess(results));
+    } else {
+        dispatch(searchResultsFailure());
+    }
+}
+catch(e) {
+    console.log(e);
+    dispatch(searchResultsFailure());
+   }
   }
 }
