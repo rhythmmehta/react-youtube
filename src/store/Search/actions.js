@@ -88,3 +88,29 @@ catch(e) {
    }
   }
 }
+
+export const ADD_TO_FAVORITES='ADD_TO_FAVORITES';
+export function addToFav(results){
+    return {
+        type: ADD_TO_FAVORITES,
+        data: results
+    }
+}
+
+export function addFavorites(result){
+    return async (dispatch, getState) => {
+        try{
+            let recent;
+            recent = getState().search.favorites;
+            let exists = recent.filter(x=>x===result);
+            if(exists.length === 0) {
+                recent.push(result);
+                dispatch(addToFav(recent));
+            }
+        }
+catch(e){
+    console.log(e);
+    console.log("Cannot add to Favorites");
+   }
+  }
+}

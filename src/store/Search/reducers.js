@@ -3,14 +3,16 @@ import {
  SEARCH_RESULTS_SUCCESS,
  SEARCH_RESULTS_FAILURE,
  ADD_RECENT_SEARCHES,
- SEARCH_CHANGE_PAGE
+ SEARCH_CHANGE_PAGE,
+ ADD_TO_FAVORITES
 } from './actions';
 
 export function search(state = {
   isFetching: false,
   results: null,
   message: null,
-  searches: []
+  searches: [],
+  favorites: []
 }, action) {
   switch (action.type) {
     case SEARCH_RESULTS_FETCH:
@@ -40,6 +42,10 @@ export function search(state = {
         message: action.message,
         results: null
       })
+      case ADD_TO_FAVORITES:
+            return Object.assign({}, state, {
+            favorites: action.data
+        })
 
     default:
       return state

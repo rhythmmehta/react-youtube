@@ -2,9 +2,9 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
-
-import PrintResults  from '../components/PrintResults'
+import PrintResults  from '../containers/PrintResults'
 import * as searchActions from '../store/Search/actions';
 import * as toasterActions from '../store/Toaster/actions';
 
@@ -55,11 +55,11 @@ async handleSubmit() {
 
      handleNext(){
              let nextToken= this.props.search.results.nextPageToken;
-            this.props.searchActions.goToPage(this.state.title || this.props.search,nextToken)
+            this.props.searchActions.goToPage(this.state.title || this.state.search,nextToken)
          }
 handlePrev(){
     let prevToken=this.props.search.results.prevPageToken;
-    this.props.searchActions.goToPage(this.state.title || this.props.search,prevToken)
+    this.props.searchActions.goToPage(this.state.title || this.state.search,prevToken)
 }
 validate() {
         let { errors, title, search } = this.state;
@@ -88,6 +88,7 @@ render(){
     let errors = this.state.errors;
 
     return(<div id="container--VideoSearch">
+    <Link to='/favorites'>Go to favorites</Link>
         <div className="form">
             <pre>
             <label htmlFor="title">Enter the title: </label>
