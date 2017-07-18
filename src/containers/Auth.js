@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 import * as authActions from "../store/Auth/actions";
 
@@ -15,11 +16,14 @@ export class Auth extends React.Component{
         this.state = {
             email: null,
             pass: null,
+            emailRes:null,
+            forgot: false
         }
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.logout=this.logout.bind(this);
         this.oAuth=this.oAuth.bind(this);
+        this.forgotPass=this.forgotPass.bind(this);
     }
     handleChange(evt) {
         let { name, value } = evt.target;
@@ -37,8 +41,30 @@ logout(){
 oAuth(){
     this.props.authActions.googleAuth();
 }
+forgotPass(){
+    if(this.state.emailRes){
+    this.props.authActions.getPasswordReset(this.state.emailRes);
+}
+
+}
 render(){
     let status= this.props.auth.status;
+    let forgotPass=this.state.forgot;
+    let passReset;
+    if(!this.state.forgot){
+     passReset=(<div><button name="forgot" value="true" onClick={this.handleChange}>Forgot Password?</button></div>)
+    }
+    else{
+        passReset=(<div id="forgotPass">
+        <label htmlFor="emailRes">Enter the email address</label>
+        <input type="text" name="emailRes" onChange={this.handleChange}/>
+        <button onClick={this.forgotPass}>Send Password Reset</button>
+        </div>)
+    }
+    let reset=this.props.auth.forgot;
+    if(reset){
+passReset=(<div><button name="forgot" value="true" onClick={this.handleChange}>Forgot Password?</button></div>)
+    }
     let authRes;
     if(status=='AUTH_ANONYMOUS')
     {
@@ -48,9 +74,12 @@ render(){
             <label htmlFor="email" >E-mail ID</label>
             <input type="text" name="email" onChange={this.handleChange}/>
             <label htmlFor="pass" >Password</label>
-            <input type="text" name="pass" onChange={this.handleChange}/>
+            <input type="password" name="pass" onChange={this.handleChange}/>
             <button type="submit" onClick={this.handleSubmit}>Submit</button>
-        </div>
+        </div><br/><br/>
+        <div id="newUser"><Link to='/signUp'>New User? Sign Up here!</Link></div>
+        <br/>
+         {passReset}
          <button onClick={this.oAuth}>Log in with Google</button>
      </div>);
  }else if(status=='AUTH_LOGGED_IN'){

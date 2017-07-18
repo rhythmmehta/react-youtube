@@ -1,5 +1,6 @@
 import * as firebase from "firebase";
 import { auth } from "../../firebaseApp"
+import { clearSearchDetails } from "../Search/actions";
 
 export const AUTH_OPEN='AUTH_OPEN';
 export const AUTH_LOGIN_SUCCESS='AUTH_LOGIN_SUCCESS';
@@ -62,7 +63,9 @@ export function googleAuth() {
 }
 }
  export function login(email,password){
-    return async (dispatch, getState) => { firebase.auth().signInWithEmailAndPassword(email, password).then(function(result) {
+    return async (dispatch, getState) => {
+        dispatch(open_Auth());
+        firebase.auth().signInWithEmailAndPassword(email, password).then(function(result) {
          if(result){
          let user = result.uid;
           dispatch(loginSuccess(email,user));
@@ -83,6 +86,38 @@ export function googleAuth() {
 export function logoutUser(){
      return async (dispatch, getState) => {
   dispatch(logout());
+  dispatch(clearSearchDetails());
   auth.signOut();
+}
+}
+
+export const PASSWORD_RESET='PASSWORD_RESET';
+export function passwordReset(){
+    return{
+        type: PASSWORD_RESET,
+        status: 'AUTH_ANONYMOUS',
+        forgot: true
+    }
+}
+export function getPasswordReset(email){
+    return async (dispatch, getState) => {
+ dispatch(passwordReset());
+ firebase.auth().sendPasswordResetEmail(email).then(()=> {
+
+         alert('Password Reset Email Sent!');
+
+       }).catch(function(error) {
+
+         var errorCode = error.code;
+         var errorMessage = error.message;
+
+         if (errorCode == 'auth/invalid-email') {
+           alert(errorMessage);
+         } else if (errorCode == 'auth/user-not-found') {
+           alert(errorMessage);
+         }
+         console.log(error);
+
+       });
 }
 }

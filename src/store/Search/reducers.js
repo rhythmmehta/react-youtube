@@ -4,7 +4,8 @@ import {
  SEARCH_RESULTS_FAILURE,
  ADD_RECENT_SEARCHES,
  SEARCH_CHANGE_PAGE,
- ADD_TO_FAVORITES
+ ADD_TO_FAVORITES,
+ CLEAR_SEARCH
 } from './actions';
 
 export function search(state = {
@@ -45,6 +46,12 @@ export function search(state = {
       case ADD_TO_FAVORITES:
             return Object.assign({}, state, {
             favorites: action.data
+        })
+        case CLEAR_SEARCH:
+        return Object.assign({}, state, {
+          isFetching: false,
+          message: action.message,
+          results: null
         })
 
     default:

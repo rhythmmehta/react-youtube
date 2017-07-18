@@ -114,3 +114,11 @@ catch(e){
    }
   }
 }
+
+export const CLEAR_SEARCH='CLEAR_SEARCH';
+export function clearSearchDetails(){
+    return{
+        type: CLEAR_SEARCH,
+        message: 'Search results cleared'
+    }
+}
