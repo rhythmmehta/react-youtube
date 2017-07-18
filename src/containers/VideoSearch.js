@@ -6,12 +6,14 @@ import { Link } from 'react-router-dom';
 
 import PrintResults  from '../containers/PrintResults'
 import * as searchActions from '../store/Search/actions';
+import * as authActions from '../store/Auth/actions';
 import * as toasterActions from '../store/Toaster/actions';
 
 export class VideoSearch extends React.Component{
     static propTypes = {
     toasterActions: PropTypes.object.isRequired,
     searchActions: PropTypes.object.isRequired,
+    authActions: PropTypes.object.isRequired,
     search: PropTypes.object.isRequired
 };
 constructor(){
@@ -86,9 +88,13 @@ render(){
             });
     }
     let errors = this.state.errors;
+    let authRes;
+    if(this.props.auth.status==='AUTH_LOGGED_IN')
+     authRes=true;
+
 
     return(<div id="container--VideoSearch">
-    <Link to='/favorites'>Go to favorites</Link>
+    { authRes ? (<div id="s"><Link to='/favorites'>Go to favorites</Link>
         <div className="form">
             <pre>
             <label htmlFor="title">Enter the title: </label>
@@ -110,7 +116,8 @@ render(){
 { this.props.search.results && this.props.search.results.prevPageToken ? (<button onClick={this.handlePrev} >Prev Page</button>) : null }
 { this.props.search.results ? (<button onClick={this.handleNext} >Next Page</button>) : null }
 
-</div>
+</div></div>): null}
+
 </div>
 
     )
@@ -118,11 +125,13 @@ render(){
 }
 export default connect(
     state=>({
-         search: state.search
+         search: state.search,
+         auth: state.auth
     }),
     dispatch => ({
         toasterActions: bindActionCreators(toasterActions, dispatch),
-        searchActions:  bindActionCreators(searchActions, dispatch)
+        searchActions:  bindActionCreators(searchActions, dispatch),
+        authActions:  bindActionCreators(authActions, dispatch)
 
     })
 )(VideoSearch);

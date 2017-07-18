@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import './App.css';
 import VideoSearch from './containers/VideoSearch';
+import Auth from './containers/Auth';
 import Toaster from './components/Toaster';
 import Header from './components/Header';
 class App extends Component {
@@ -13,6 +14,7 @@ class App extends Component {
         }
         return (
             <div className="App">
+                <Auth/>
                 <Header/>
                 { toaster }
 
