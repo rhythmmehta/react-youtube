@@ -1,5 +1,6 @@
 # React Youtube Search
-A react app to connect to the google Youtube Data API snd search for videos
+A react app to connect to the google Youtube Data API and search for videos,log recent searches and add to favorites. 
+Authentication is done using firebase.
 
 ### Pre-requisite
 
